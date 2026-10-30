@@ -420,3 +420,106 @@ interpretation of forecasting results.
 **Language:** Python  
 **Status:** Model experimentation completed; final test-set evaluation 
 pending.
+
+# Task 2 — Database Design (MySQL and MongoDB)
+## Database design
+
+### MySQL
+
+The relational design uses four tables:
+
+1. `companies` — one row for the AAPL company identity.
+2. `dataset_sources` — provenance for the Kaggle source file.
+3. `daily_stock_prices` — one OHLCV row per company and trading date.
+4. `daily_technical_indicators` — derived daily features linked one-to-one to a price row.
+
+The schema has primary keys, foreign keys, a unique `(company_id, trade_date)` constraint, and date/lookup indexes. The four-table design exceeds the required minimum of three tables.
+
+### MongoDB
+
+The `stock_timeseries.daily_stock_prices` collection stores one document per AAPL trading day. Each document embeds `market`, `indicators`, and `source` subdocuments. A unique compound index on `{ ticker: 1, date: -1 }` prevents duplicate trading-day documents and supports latest-record/date-range queries.
+
+### 1. Install and start the database servers
+
+Install these applications directly on your Windows computer:
+
+- **MySQL Server 8.0 or later**. MySQL Workbench is recommended for opening and running the `.sql` files.
+- **MongoDB Community Server**. Install MongoDB Shell (`mongosh`) as well. MongoDB Compass is optional but useful for viewing the collection.
+- **Python 3.10 or later**.
+
+During MySQL setup, remember the username and password for your local database account. The usual local connection is `localhost`, port `3306`. The usual MongoDB local connection is `mongodb://localhost:27017`.
+
+Make sure both database services are running before continuing. On Windows, open **Services** (`services.msc`) and start the MySQL and MongoDB services if they are not already running. Service names can vary by installation (for example, `MySQL80` and `MongoDB`).
+
+You can confirm that the command-line tools are available in PowerShell with:
+
+```powershell
+mysql --version
+mongosh --version
+python --version
+```
+
+### 2. Download the dataset
+
+Download `all_stocks_5yr.csv` dataset from the current repository.
+
+### 3. Create the MySQL database and tables
+
+**Recommended: MySQL Workbench**
+
+1. Open MySQL Workbench and connect to your local MySQL server.
+2. Select **File → Open SQL Script**.
+3. Open `sql/01_schema.sql` from this folder.
+4. Click the lightning-bolt **Execute** button.
+5. Refresh the Schemas panel. You should see `stock_timeseries` with the four tables.
+
+### 4. Create the MongoDB collection and indexes
+
+Open PowerShell or Command Prompt in this folder and run:
+
+```powershell
+mongosh "mongodb://localhost:27017/stock_timeseries" --file mongodb/01_collection_setup.js
+```
+
+The script creates the `daily_stock_prices` collection, applies document validation, and creates indexes. You can inspect the collection in MongoDB Compass by connecting to `mongodb://localhost:27017` and opening the `stock_timeseries` database.
+
+### 5. Configure the Python loader
+
+Copy `.env.example` to `.env`:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+### 6. Install Python dependencies
+
+In PowerShell, from this folder, run:
+
+```powershell
+py -m venv .venv
+.venv\Scripts\Activate.ps1
+py -m pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+## Execute the required queries
+
+### MySQL
+
+In MySQL Workbench, open `sql/02_queries.sql` and click **Execute**. Alternatively, from Command Prompt:
+
+```cmd
+mysql -u root -p stock_timeseries < sql\02_queries.sql
+```
+
+The SQL file contains three required queries: latest AAPL record, observations within a date range, and a full-period summary. An optional fourth query retrieves technical indicators for a chosen range.
+
+### MongoDB
+
+Run the query script from PowerShell or Command Prompt:
+
+```powershell
+mongosh "mongodb://localhost:27017/stock_timeseries" --file mongodb/02_queries.js
+```
+
+The MongoDB file runs the equivalent three required queries and an optional technical-indicator query. You can also open MongoDB Compass and inspect the returned collection documents.
