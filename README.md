@@ -1,7 +1,7 @@
-# Apple (AAPL) Stock Price Forecasting Using Machine Learning and Deep 
+## Apple (AAPL) Stock Price Forecasting Using Machine Learning and Deep 
 Learning
 
-## 1. Project Overview
+# 1. Project Overview
 
 This project explores the use of traditional machine learning and deep 
 learning techniques to forecast Apple's (AAPL) next-trading-day closing 
@@ -15,7 +15,7 @@ or the direction of price movement produces better results.
 The experiments compare traditional regression algorithms, recurrent 
 neural networks, and simple baseline forecasting methods.
 
-## 2. Project Objectives
+# 2. Project Objectives
 
 - Analyse historical Apple stock market data.
 - Perform data cleaning and feature engineering.
@@ -26,7 +26,7 @@ neural networks, and simple baseline forecasting methods.
 - Identify the best-performing trained machine learning model and compare 
 it against simple forecasting baselines.
 
-## 3. Dataset Description
+# 3. Dataset Description
 
 The project uses historical Apple stock market data containing **1,259 
 original records and 14 columns**.
@@ -56,7 +56,7 @@ missing values.
 **Dataset source:** Add the original dataset provider and download link 
 here.
 
-## 4. Data Preprocessing and Feature Engineering
+# 4. Data Preprocessing and Feature Engineering
 
 Several features were used to capture historical price behaviour and 
 market volatility.
@@ -81,7 +81,7 @@ The final modelling dataset contained **1,209 usable observations** after
 removing rows affected by rolling-window, lag, and target-shifting 
 operations.
 
-### Prediction Target
+## Prediction Target
 
 The primary prediction task was to estimate the next trading day's closing 
 price using information available after the current trading day's market 
@@ -107,7 +107,7 @@ The test dataset was reserved for final evaluation.
 Feature scaling was fitted using training data only and then applied to 
 validation data.
 
-## 6. Machine Learning and Deep Learning Experiments
+# 6. Machine Learning and Deep Learning Experiments
 
 A total of ten experiments were conducted.
 
@@ -565,10 +565,10 @@ The project highlights the importance of chronological data splitting,
 feature engineering, baseline comparisons, model evaluation, and careful 
 interpretation of forecasting results.
 
-## Task 4: Stock Price Prediction and Forecasting
-# Objective
+# Task 4: Stock Price Prediction and Forecasting
+## Objective
 Task 4 connects the forecasting workflow to the project's REST API. It retrieves historical AAPL records, recreates the features used by the trained model, loads the saved tuned Support Vector Regression (SVR) pipeline, and estimates the next trading record's closing price.
-# Implementation
+## Implementation
 The implementation is in scripts/forecast_from_api.py. It:
 1. Requests historical records from the FastAPI date-range endpoint.
 2. Uses the SQL backend by default, or MongoDB when configured.
@@ -578,11 +578,11 @@ The implementation is in scripts/forecast_from_api.py. It:
 6. Loads models/best_tuned_svr_model.pkl and predicts from the latest complete feature row.
 7. Prints the number of records retrieved, number of usable rows, latest market date and close, and predicted next close.
 The 11 model input columns are open, high, low, close, volume, MA_20, MA_50, close_lag_1, close_lag_5, daily_return_pct, and rolling_volatility.
-# Run Task 4
+## Run Task 4
 Run commands from the repository root. Install dependencies and activate your virtual environment first. Then start the API in one terminal:
-# python -m uvicorn api.main:app --reload
+## python -m uvicorn api.main:app --reload
 The interactive API documentation is available at http://127.0.0.1:8000/docs. In a second terminal, run the forecast script:
-# python scripts/forecast_from_api.py
+## python scripts/forecast_from_api.py
 The default configuration uses the SQL backend, AAPL, and the date range 2013-01-01 through 2018-12-31. The script also supports these optional environment variables:
 | Variable | Default | Purpose |
 |---|---|---|
@@ -595,15 +595,15 @@ The default configuration uses the SQL backend, AAPL, and the date range 2013-01
 
 
 For example, to use MongoDB in a Linux/macOS terminal:
-# API_BACKEND=mongo python scripts/forecast_from_api.py
+## API_BACKEND=mongo python scripts/forecast_from_api.py
 On Windows PowerShell, set the variable first with $env:API_BACKEND = "mongo", then run python scripts/forecast_from_api.py.
 ## Output and interpretation
 A successful run prints the latest available market date, its recorded closing price, and the model's predicted next trading-day close. This is the next record after the latest date returned by the API; it is not automatically a live market forecast. The included dataset covers historical dates through 2018, so the forecast may refer to the next trading day after that historical period. The output is an estimate for educational purposes, not financial advice.
-# Testing status and limitations
+## Testing status and limitations
 The API application can be started and its health route and interactive documentation can be opened. However, a successful end-to-end forecast depends on a working database connection and populated historical records. In the development environment used to prepare this README, the SQL endpoint returned a MySQL authentication error for the local root account. Therefore, a successful forecast output has not been confirmed in that environment. Configure a valid database user and load the project data before treating the end-to-end workflow as tested.
 
 The script uses the existing saved SVR pipeline; it does not retrain the model. It also does not retrieve current prices from a live stock-market provider.
-# Task 4 deliverable
+## Task 4 deliverable
 - scripts/forecast_from_api.py — API-based preprocessing and next-record close forecasting.
 - models/best_tuned_svr_model.pkl — trained pipeline used by the script.
 
