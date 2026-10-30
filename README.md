@@ -337,7 +337,7 @@ GitHub repository.
 1. Clone the repository:
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
+https://github.com/TKcodes-bit/Stock-Price-Forecasting-Using-Time-Series-Analysis.git
 ```
 
 2. Navigate to the project directory:
