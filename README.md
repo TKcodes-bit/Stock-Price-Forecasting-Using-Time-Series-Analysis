@@ -330,6 +330,38 @@ AAPL-Stock-Forecasting/
 ```
 
 
+## Task 3: REST API for CRUD and Time-Series Queries
+
+A FastAPI service in `api/` exposes the Task 2 databases. Every endpoint
+exists twice, under `/sql` (MySQL) and `/mongo` (MongoDB). Both return the
+same JSON shape. Records are identified by `trade_date`, and an optional
+`?ticker=` query parameter defaults to `AAPL`.
+
+| Method | Path | Purpose |
+|---|---|---|
+| `POST` | `/{db}/prices` | Create a trading-day record (with optional indicators) |
+| `GET` | `/{db}/prices?limit=&offset=` | List records, newest first |
+| `GET` | `/{db}/prices/{trade_date}` | Get one trading day |
+| `PUT` | `/{db}/prices/{trade_date}` | Update the supplied fields of a trading day |
+| `DELETE` | `/{db}/prices/{trade_date}` | Delete a trading day (MySQL cascades to indicators) |
+| `GET` | `/{db}/prices/latest` | **Latest record** |
+| `GET` | `/{db}/prices/range?start_date=&end_date=` | **Records by date range** (both ends inclusive) |
+
+Run it after loading the databases with `scripts/load_databases.py`. It uses
+the same `MYSQL_*` / `MONGODB_*` environment variables or `.env` file:
+
+```bash
+pip install -r requirements.txt
+uvicorn api.main:app --reload
+# Interactive docs: http://127.0.0.1:8000/docs
+curl "http://127.0.0.1:8000/sql/prices/latest"
+curl "http://127.0.0.1:8000/mongo/prices/range?start_date=2013-02-08&end_date=2013-02-14"
+```
+
+Errors: `404` for an unknown date, `409` for a duplicate date on `POST`,
+`422` for invalid prices (e.g. `low > high`), and `400` when
+`start_date > end_date`.
+
 ## 13. How to Run the Project
 
 1. Clone the repository:
