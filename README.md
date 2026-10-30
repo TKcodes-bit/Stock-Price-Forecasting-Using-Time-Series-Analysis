@@ -572,5 +572,102 @@ interpretation of forecasting results.
 **Institution:** African Leadership University  
 **Language:** Python  
 **Status:** Model experimentation completed; final test-set evaluation 
-pending.
+## Task 4: Stock Price Prediction and Forecasting
+
+### Overview
+
+This task focuses on developing a Python forecasting script that retrieves historical Apple Inc. (AAPL) stock data from the project's API, preprocesses the data, loads the trained Support Vector Regression (SVR) model, and predicts the next trading day's closing price.
+
+### Selected Machine Learning Model
+
+The project uses a tuned Support Vector Regression (SVR) model.
+
+The model was trained using historical AAPL stock data and a chronological time-series split to preserve the order of observations.
+
+### Input Features
+
+The model uses the following 11 features:
+
+- Open
+- High
+- Low
+- Close
+- Volume
+- MA_20
+- MA_50
+- Close Lag 1
+- Close Lag 5
+- Daily Return Percentage
+- Rolling Volatility
+
+### Forecasting Workflow
+
+The forecasting process follows these steps:
+
+1. Retrieve historical stock records from the FastAPI endpoint.
+2. Sort the records by trading date.
+3. Preprocess the historical data.
+4. Calculate technical indicators and lag features.
+5. Load the previously trained SVR model.
+6. Select the latest complete feature record.
+7. Generate the next trading day's predicted closing price.
+8. Display the prediction.
+
+### API Integration
+
+The forecasting script uses the project's FastAPI endpoints.
+
+**MySQL historical records:**
+
+`GET /sql/prices/range`
+
+**MongoDB historical records:**
+
+`GET /mongo/prices/range`
+
+The API documentation is available at:
+
+`http://127.0.0.1:8000/docs`
+
+### Model File
+
+The trained model is saved as:
+
+`best_tuned_svr_model.pkl`
+
+### Project Dependencies
+
+Install the required Python libraries using:
+
+```bash
+pip install -r requirements.txt
+```
+
+### Running the Application
+
+Start the FastAPI application from the project root:
+
+```bash
+uvicorn api.main:app --reload
+```
+
+Once the forecasting script has been created, run it using:
+
+```bash
+python prediction/forecast.py
+```
+
+### Expected Output
+
+The forecasting script should display:
+
+- The latest available trading date.
+- The latest recorded closing price.
+- The predicted next trading day's closing price.
+
+**Note:** The prediction represents the next trading day's expected closing price, not necessarily the next calendar day's price.
+
+### Task 4 Deliverable
+
+The final deliverable is a Python forecasting script that integrates the historical stock data API, preprocessing pipeline, and trained SVR model to generate a stock price prediction.pending.
 
