@@ -329,39 +329,6 @@ AAPL-Stock-Forecasting/
 └── requirements.txt
 ```
 
-
-## Task 3: REST API for CRUD and Time-Series Queries
-
-A FastAPI service in `api/` exposes the Task 2 databases. Every endpoint
-exists twice, under `/sql` (MySQL) and `/mongo` (MongoDB). Both return the
-same JSON shape. Records are identified by `trade_date`, and an optional
-`?ticker=` query parameter defaults to `AAPL`.
-
-| Method | Path | Purpose |
-|---|---|---|
-| `POST` | `/{db}/prices` | Create a trading-day record (with optional indicators) |
-| `GET` | `/{db}/prices?limit=&offset=` | List records, newest first |
-| `GET` | `/{db}/prices/{trade_date}` | Get one trading day |
-| `PUT` | `/{db}/prices/{trade_date}` | Update the supplied fields of a trading day |
-| `DELETE` | `/{db}/prices/{trade_date}` | Delete a trading day (MySQL cascades to indicators) |
-| `GET` | `/{db}/prices/latest` | **Latest record** |
-| `GET` | `/{db}/prices/range?start_date=&end_date=` | **Records by date range** (both ends inclusive) |
-
-Run it after loading the databases with `scripts/load_databases.py`. It uses
-the same `MYSQL_*` / `MONGODB_*` environment variables or `.env` file:
-
-```bash
-pip install -r requirements.txt
-uvicorn api.main:app --reload
-# Interactive docs: http://127.0.0.1:8000/docs
-curl "http://127.0.0.1:8000/sql/prices/latest"
-curl "http://127.0.0.1:8000/mongo/prices/range?start_date=2013-02-08&end_date=2013-02-14"
-```
-
-Errors: `404` for an unknown date, `409` for a duplicate date on `POST`,
-`422` for invalid prices (e.g. `low > high`), and `400` when
-`start_date > end_date`.
-
 ## 13. How to Run the Project
 
 1. Clone the repository:
@@ -412,14 +379,6 @@ The project highlights the importance of chronological data splitting,
 feature engineering, baseline comparisons, model evaluation, and careful 
 interpretation of forecasting results.
 
----
-
-**Author:** Thomas Kweya Odongo  
-**Project:** AAPL Stock Price Forecasting  
-**Institution:** African Leadership University  
-**Language:** Python  
-**Status:** Model experimentation completed; final test-set evaluation 
-pending.
 
 # Task 2 — Database Design (MySQL and MongoDB)
 ## Database design
@@ -523,3 +482,95 @@ mongosh "mongodb://localhost:27017/stock_timeseries" --file mongodb/02_queries.j
 ```
 
 The MongoDB file runs the equivalent three required queries and an optional technical-indicator query. You can also open MongoDB Compass and inspect the returned collection documents.
+
+## Task 3: REST API for CRUD and Time-Series Queries
+
+A FastAPI service in `api/` exposes the Task 2 databases. Every endpoint
+exists twice, under `/sql` (MySQL) and `/mongo` (MongoDB). Both return the
+same JSON shape. Records are identified by `trade_date`, and an optional
+`?ticker=` query parameter defaults to `AAPL`.
+
+| Method | Path | Purpose |
+|---|---|---|
+| `POST` | `/{db}/prices` | Create a trading-day record (with optional indicators) |
+| `GET` | `/{db}/prices?limit=&offset=` | List records, newest first |
+| `GET` | `/{db}/prices/{trade_date}` | Get one trading day |
+| `PUT` | `/{db}/prices/{trade_date}` | Update the supplied fields of a trading day |
+| `DELETE` | `/{db}/prices/{trade_date}` | Delete a trading day (MySQL cascades to indicators) |
+| `GET` | `/{db}/prices/latest` | **Latest record** |
+| `GET` | `/{db}/prices/range?start_date=&end_date=` | **Records by date range** (both ends inclusive) |
+
+Run it after loading the databases with `scripts/load_databases.py`. It uses
+the same `MYSQL_*` / `MONGODB_*` environment variables or `.env` file:
+
+```bash
+pip install -r requirements.txt
+uvicorn api.main:app --reload
+# Interactive docs: http://127.0.0.1:8000/docs
+curl "http://127.0.0.1:8000/sql/prices/latest"
+curl "http://127.0.0.1:8000/mongo/prices/range?start_date=2013-02-08&end_date=2013-02-14"
+```
+
+Errors: `404` for an unknown date, `409` for a duplicate date on `POST`,
+`422` for invalid prices (e.g. `low > high`), and `400` when
+`start_date > end_date`.
+
+## 13. How to Run the Project
+
+1. Clone the repository:
+
+```bash
+https://github.com/TKcodes-bit/Stock-Price-Forecasting-Using-Time-Series-Analysis.git
+```
+
+2. Navigate to the project directory:
+
+```bash
+cd AAPL-Stock-Forecasting
+```
+
+3. Install the required libraries:
+
+```bash
+pip install -r requirements.txt
+```
+
+4. Open the notebook in Google Colab or Jupyter Notebook.
+
+5. Upload or connect the original dataset.
+
+6. Run the notebook cells sequentially, beginning with data loading and 
+preprocessing.
+
+7. Review the experiment results and evaluation visualisations.
+
+**Note:** The original dataset and any large raw data files should be 
+stored separately, such as in Google Drive, rather than committed to 
+GitHub.
+
+## 14. Conclusion
+
+This project compared traditional machine learning and deep learning 
+approaches for forecasting Apple's next-trading-day closing price. Ten 
+experiments explored price regression, return prediction, and direction 
+classification.
+
+Tuned SVR emerged as the best trained machine learning regression model on 
+the validation dataset. However, the naive persistence baseline achieved 
+slightly better validation price-error metrics. The deep learning 
+experiments demonstrated that more complex architectures do not 
+necessarily outperform simpler forecasting approaches.
+
+The project highlights the importance of chronological data splitting, 
+feature engineering, baseline comparisons, model evaluation, and careful 
+interpretation of forecasting results.
+
+---
+
+**Author:** Thomas Kweya Odongo  
+**Project:** AAPL Stock Price Forecasting  
+**Institution:** African Leadership University  
+**Language:** Python  
+**Status:** Model experimentation completed; final test-set evaluation 
+pending.
+
