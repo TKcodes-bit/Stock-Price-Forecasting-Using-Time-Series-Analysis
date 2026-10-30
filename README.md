@@ -309,7 +309,7 @@ trading strategies.
 
 ## 12. Project Structure
 
-A suggested organisation for the project repository is:
+ organisation for the project repository is:
 
 ```text
 AAPL-Stock-Forecasting/
@@ -329,8 +329,6 @@ AAPL-Stock-Forecasting/
 └── requirements.txt
 ```
 
-The actual filenames and folders should be adjusted to match the final 
-GitHub repository.
 
 ## 13. How to Run the Project
 
