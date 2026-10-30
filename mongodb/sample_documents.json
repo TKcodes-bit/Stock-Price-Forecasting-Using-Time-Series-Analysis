@@ -1,0 +1,62 @@
+[
+  {
+    "ticker": "AAPL",
+    "company": "Apple Inc.",
+    "date": {
+      "$date": "2013-02-08T00:00:00Z"
+    },
+    "market": {
+      "open": 67.7142,
+      "high": 68.4014,
+      "low": 66.8928,
+      "close": 67.8542,
+      "volume": 158168416
+    },
+    "indicators": {
+      "ma_20": null,
+      "ma_50": null,
+      "close_lag_1": null,
+      "close_lag_5": null,
+      "daily_return_pct": null,
+      "absolute_return_pct": null,
+      "rolling_volatility": null
+    },
+    "source": {
+      "dataset": "S&P 500 Stock Data",
+      "platform": "Kaggle",
+      "author": "Cam Nugent",
+      "file": "all_stocks_5yr.csv",
+      "url": "https://www.kaggle.com/datasets/camnugent/sandp500"
+    }
+  },
+  {
+    "ticker": "AAPL",
+    "company": "Apple Inc.",
+    "date": {
+      "$date": "2013-02-11T00:00:00Z"
+    },
+    "market": {
+      "open": 68.0714,
+      "high": 69.2771,
+      "low": 67.6071,
+      "close": 68.5614,
+      "volume": 129029425
+    },
+    "indicators": {
+      "ma_20": null,
+      "ma_50": null,
+      "close_lag_1": 67.8542,
+      "close_lag_5": null,
+      "daily_return_pct": 1.04223467,
+      "absolute_return_pct": 1.04223467,
+      "rolling_volatility": null
+    },
+    "source": {
+      "dataset": "S&P 500 Stock Data",
+      "platform": "Kaggle",
+      "author": "Cam Nugent",
+      "file": "all_stocks_5yr.csv",
+      "url": "https://www.kaggle.com/datasets/camnugent/sandp500"
+    }
+  }
+]
